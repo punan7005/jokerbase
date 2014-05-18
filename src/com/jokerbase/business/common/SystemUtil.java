@@ -30,4 +30,12 @@ public final class SystemUtil {
 		return true;
 	}
 	
+	/**
+	 * 增加开发时候不关心登录
+	 * @return
+	 */
+	public static boolean isDebug(){
+		return true;
+	}
+	
 }

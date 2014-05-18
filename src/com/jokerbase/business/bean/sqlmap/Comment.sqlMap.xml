@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="com.jokerbase.business.bean.Comment">
+
+  <typeAlias alias="comment" type="com.jokerbase.business.bean.Comment"/>
+
+  <resultMap id="commentResult" class="comment">
+    <result property="commentId" column="comment_id"/>
+    <result property="commentTitle" column="comment_title"/>
+	<result property="commentContent" column="comment_content"/>
+	<result property="commentContentId" column="comment_content_id"/>
+	<result property="createId" column="create_id"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateTime" column="update_time"/>
+	<result property="updateId" column="update_id"/>
+	<result property="isDelete" column="is_delete"/>
+	<result property="commentStatus" column="comment_status"/>
+	<result property="deleteTime" column="delete_time"/>
+	<result property="deleteId" column="delete_id"/>
+	<!-- 
+	<result property="roles" column="id" select="com.teacherclub.business.security.entity.Role.selectByUserId"/>
+	 -->
+  </resultMap> 
+  
+  <select id="selectById" resultMap="commentResult">
+    select * from tb_comment 
+		<dynamic prepend="where">
+			<isParameterPresent>
+				comment_id = #value#
+			</isParameterPresent>
+		</dynamic> 
+  </select>
+  
+  <select id="selectByMap" resultMap="commentResult">
+    select * from tb_comment 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="commentId">
+				comment_id = #commentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentTitle">
+				comment_title = #commentTitle#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentContent">
+				comment_content = #commentContent#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentStatus">
+				commentStatus = #comment_stauts#
+			</isNotNull>
+		</dynamic> 
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  
+  <insert id="insert" parameterClass="comment">
+       insert into tb_comment 
+	(comment_id, 
+	comment_title, 
+	comment_content, 
+	comment_content_id, 
+	create_id, 
+	create_time, 
+	update_time, 
+	update_id, 
+	is_delete, 
+	comment_status, 
+	delete_time, 
+	delete_id
+	)
+	values
+	(
+	#commentId#,
+	#commentTitle#,
+	#commentContent#,
+	#commentContentId#,
+	#createId#,
+	#createTime#,
+	#updateTime#,
+	#updateId#,
+	#isDelete#,
+	#commentStatus#,
+	#deleteTime#,
+	#deleteId#
+	);
+
+    <selectKey resultClass="java.lang.String" keyProperty="commentId">
+    	select last_insert_id(); 
+    </selectKey>
+  </insert>
+  
+  <select id="count" resultClass="int">
+  		select count(*) from tb_comment
+  		<dynamic prepend="where">
+			<isNotNull prepend="and" property="commentId">
+				comment_id = #commentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentTitle">
+				comment_title = #commentTitle#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentContentId">
+				comment_content_id = #commentContentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentStauts">
+				comment_status = #commentStatus#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+  		</dynamic> 
+  </select>
+  
+  <update id="update" parameterClass="comment">
+    
+	update tb_comment 
+	set
+	comment_id = #commentId# , 
+	comment_title = #commentTitle# , 
+	comment_content = #commentContent# , 
+	comment_content_id = #commentContentId# , 
+	create_id = #createId# , 
+	create_time = #createTime# , 
+	update_time = #updateTime# , 
+	update_id = #updateId# , 
+	is_delete = #isDelete# , 
+	comment_status = #commentStatus# , 
+	delete_time = #deleteTime# , 
+	delete_id = #deleteId#
+	where
+	comment_id = #commentId# ;
+
+  </update>
+  <select id="selectPageByMap" resultClass="java.util.HashMap">
+  	select 
+  	n.comment_id as commentId, 
+  	n.comment_title as commentTitle, 
+  	n.comment_content as commentContent, 
+  	n.comment_content_id as commentContentId, 
+  	n.create_time as createTime, 
+  	n.update_time as updateTime, 
+  	n.delete_time as deleteTime, 
+  	n.comment_status as commentStatus, 
+  	a.user_name as createUserName,
+  	b.user_name as UpdateUserName,
+  	c.user_name as DeleteUserName  
+  	 from tb_comment n
+  	left join tb_user a on n.create_id = a.user_id 
+  	left join tb_user b on n.update_id = b.user_id 
+  	left join tb_user c on n.delete_id = c.user_id 
+  	<dynamic prepend="where">
+			<isNotNull prepend="and" property="commentId">
+				comment_id = #commentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentTitle">
+				comment_title = #commentTitle#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentContent">
+				comment_content = #commentContent#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				n.is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="commentStatus">
+				commentStatus = #comment_status#
+			</isNotNull>
+		</dynamic>
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  <!-- 
+   <insert id="insert" parameterClass="user">
+       insert into user (username,sex) values (#userName#,#sex#)
+    <selectKey resultClass="java.lang.Integer" keyProperty="userId">
+    	select last_insert_id(); 
+    </selectKey>
+  </insert>
+  
+  <select id="selectById" resultMap="userResult">
+    select * from user 
+		<dynamic prepend="where">
+			<isParameterPresent>
+				id = #value#
+			</isParameterPresent>
+		</dynamic> 
+  </select>
+  
+  <select id="selectByIds" resultMap="userResult" parameterClass="java.util.List">
+    select * from user 
+		where
+			id in
+	  		<iterate open="(" close=")" conjunction=",">
+      			#[]#
+	    	</iterate>
+  </select>
+
+  
+
+  <update id="updateByMap">
+    update user
+    	<dynamic prepend="set">
+    		<isNotNull prepend="," property="loginName">
+	    		loginname = #loginName#
+	    	</isNotNull>
+    		<isNotNull prepend="," property="trueName">
+	    		truename = #trueName#
+	    	</isNotNull>
+    	</dynamic> 
+    	where id = #id#
+  </update>
+  
+  <update id="updateByIdsMap">
+    update user
+    	<dynamic prepend="set">
+    		<isNotNull prepend="," property="loginName">
+	    		loginname = #loginName#
+	    	</isNotNull>
+    		<isNotNull prepend="," property="trueName">
+	    		truename = #trueName#
+	    	</isNotNull>
+    	</dynamic> 
+    	where id in
+    	<iterate open="(" close=")" conjunction="," property="ids">
+    		#ids[]#
+    	</iterate>
+  </update>
+  	 注意：此处用的是id
+   
+   <delete id="deleteById" parameterClass="java.lang.Integer">
+		delete from user where id=#value#
+   </delete>
+  
+  <delete id="deleteByIds" parameterClass="java.util.List">
+  	delete from user
+  		where
+	  		id in 
+	  		<iterate open="(" close=")" conjunction=",">
+	      		#[]#
+	    	</iterate>
+   </delete>  
+
+   <delete id="deleteByMap">
+   	delete from user where
+   		<dynamic>
+     		<isNotNull prepend="and" property="id">
+	    		id = #id#
+	    	</isNotNull>
+   		</dynamic>
+   </delete>
+  
+ -->
+</sqlMap>

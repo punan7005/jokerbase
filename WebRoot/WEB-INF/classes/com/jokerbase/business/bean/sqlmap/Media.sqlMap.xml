@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="com.jokerbase.business.bean.Media">
+
+  <typeAlias alias="media" type="com.jokerbase.business.bean.Media"/>
+
+  <resultMap id="mediaResult" class="media">
+    <result property="mediaId" column="media_id"/>
+    <result property="mediaName" column="media_name"/>
+    <result property="mediaId" column="media_id"/>
+    <result property="mediaPath" column="media_path"/>
+    <result property="mediaDesc" column="media_desc"/>
+    <result property="channelId" column="channel_id"/>
+    <result property="channelType" column="channel_type"/>
+    <result property="createId" column="create_id"/>
+    <result property="createTime" column="create_time"/>
+    <result property="isDelete" column="is_delete"/>
+    <result property="deleteId" column="delete_id"/>
+    <result property="mediaStatus" column="media_status"/>
+
+	<!-- 
+	<result property="roles" column="id" select="com.teacherclub.business.security.entity.Role.selectByUserId"/>
+	 -->
+  </resultMap> 
+  
+  <select id="selectById" resultMap="mediaResult">
+    select * from tb_media 
+		<dynamic prepend="where">
+			<isParameterPresent>
+				media_id = #value#
+			</isParameterPresent>
+		</dynamic> 
+  </select>
+  
+    <select id="selectPageByMap"  resultClass="java.util.HashMap">
+    select 
+    media_id as mediaId,
+    media_name as mediaName,
+    media_path as mediaPath,
+    media_status as mediaStatus,
+    media_desc as mediaDesc,
+    channel_id as channelId,
+    channel_type as channelType,
+    n.create_id as chreateId,
+    n.create_time as createTime,
+    n.delete_time as deleteTime,
+    a.user_name as createUserName,
+  	c.user_name as deleteUserName 
+    from tb_media n
+    left join tb_user a on n.create_id = a.user_id 
+  	left join tb_user c on n.delete_id = c.user_id 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="mediatId">
+				media_id = #mediaId#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaName">
+				media_name = #mediaName#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaPath">
+				media_path = #mediaPath#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaDesc">
+				media_desc = #mediaDesc#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				n.create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				n.create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				n.is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="deleteTime">
+				delete_time = #deleteTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaStatus">
+				media_status = #mediaStatus#
+			</isNotNull>
+		</dynamic> 
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  
+  <select id="selectByMap" resultMap="mediaResult">
+    select * from tb_media
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="mediatId">
+				media_id = #mediaId#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaName">
+				media_name = #mediaName#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaPath">
+				media_path = #mediaPath#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaDesc">
+				media_desc = #mediaDesc#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="deleteTime">
+				delete_time = #deleteTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaStatus">
+				media_status = #mediaStatus#
+			</isNotNull>
+		</dynamic> 
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  
+  <insert id="insert" parameterClass="media">
+       insert into tb_media 
+	(media_id, 
+	media_name, 
+	media_path,
+	media_desc, 
+	channel_id,
+	channel_type,
+	create_id, 
+	create_time, 
+	is_delete, 
+	delete_time, 
+	delete_id,
+	media_status 
+	)
+	values
+	(
+	#mediaId#,
+	#mediaName#,
+	#mediaPath#,
+	#mediaDesc#,
+	#channelId#,
+	#channelType#,
+	#createId#,
+	#createTime#,
+	#isDelete#,
+	#deleteTime#,
+	#deleteId#,
+	#mediaStatus#
+	);
+
+    <selectKey resultClass="java.lang.String" keyProperty="mediaId">
+    	select last_insert_id(); 
+    </selectKey>
+  </insert>
+  
+  <select id="count" resultClass="int">
+  		select count(*) from tb_media
+  		<dynamic prepend="where">
+			<isNotNull prepend="and" property="mediaId">
+				media_id = #mediaId#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaName">
+				media_name = #mediaName#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaPath">
+				media_path = #mediaPath#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaDesc">
+				media_desc = #mediaDesc#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="deleteTime">
+				delete_time = #"deleteTime"#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaStauts">
+				media_status = #mediaStauts#
+			</isNotNull>
+  		</dynamic> 
+  </select>
+  
+      <update id="updateByMap">
+    update tb_media
+    	<dynamic prepend="set">
+    		<isNotNull prepend="," property="mediaId">
+				media_id = #mediaId#
+			</isNotNull>
+			<isNotNull prepend="," property="mediaName">
+				media_name = #mediaName#
+			</isNotNull>
+			<isNotNull prepend="," property="mediaPath">
+				media_path = #mediaPath#
+			</isNotNull>
+			<isNotNull prepend="and" property="mediaDesc">
+				media_desc = #mediaDesc#
+			</isNotNull>
+			<isNotNull prepend="," property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+			<isNotNull prepend="," property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="," property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="," property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="," property="deleteTime">
+				delete_time = #"deleteTime"#
+			</isNotNull>
+			<isNotNull prepend="," property="mediaStauts">
+				media_status = #mediaStauts#
+			</isNotNull>
+    	</dynamic> 
+    	where media_id = #id#
+  </update>
+
+</sqlMap>

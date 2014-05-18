@@ -1,91 +1,162 @@
 package com.jokerbase.business.bean;
-/** 
- * 类说明 :内容实体
- * @author  joker 
- * 创建时间：2013-2-20 下午3:16:30 
- */
-public class Content {
 
-//	内容id
+public class Content {
+	/**
+	 * 内容id
+	 */
 	private String contentId;
-//	内容所属栏目id
+	/**
+	 * 内容所属栏目id
+	 */
 	private String contentChannelId;
-//	内容标题
+	/**
+	 * 内容标题
+	 */
 	private String contentTitle;
-//	内容主体
+	/**
+	 * 内容主体
+	 */
 	private String contentMain;
-//	内容创建人id
-	private String contentCreateId;
-//	内容创建时间
-	private String contentCreateTime;
-//	内容是否删除
-	private int contentIsDelete;
-//	内容状态
+	/**
+	 * 创建人id
+	 */
+	private String createId;
+	/**
+	 * 创建时间
+	 */
+	private String createTime;
+	/**
+	 * 是否删除（0：否；1：是）
+	 */
+	private int isDelete;
+	/**
+	 * 内容状态
+	 */
 	private int contentStatus;
-//	内容修改人id
-	private String contentModifyId;
-//	内容修改时间
-	private String contentModifyTime;
+	/**
+	 * 删除时间
+	 */
+	private String deleteTime;
+	/**
+	 * 删除id
+	 */
+	private String deleteId;
+	/**
+	 * 更新id
+	 */
+	private String updateId;
+	/**
+	 * 更新时间
+	 */
+	private String updateTime;
+	/**
+	 * 排序(采用权重)
+	 */
+	private int contentSort;
 	
+
 	public String getContentId() {
 		return contentId;
 	}
+
 	public void setContentId(String contentId) {
 		this.contentId = contentId;
 	}
+
 	public String getContentChannelId() {
 		return contentChannelId;
 	}
+
 	public void setContentChannelId(String contentChannelId) {
 		this.contentChannelId = contentChannelId;
 	}
+
 	public String getContentTitle() {
 		return contentTitle;
 	}
+
 	public void setContentTitle(String contentTitle) {
 		this.contentTitle = contentTitle;
 	}
+
 	public String getContentMain() {
 		return contentMain;
 	}
+
 	public void setContentMain(String contentMain) {
 		this.contentMain = contentMain;
 	}
-	public String getContentCreateId() {
-		return contentCreateId;
+
+	public String getCreateId() {
+		return createId;
 	}
-	public void setContentCreateId(String contentCreateId) {
-		this.contentCreateId = contentCreateId;
+
+	public void setCreateId(String createId) {
+		this.createId = createId;
 	}
-	public String getContentCreateTime() {
-		return contentCreateTime;
+
+	public String getCreateTime() {
+		return createTime;
 	}
-	public void setContentCreateTime(String contentCreateTime) {
-		this.contentCreateTime = contentCreateTime;
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
-	public int getContentIsDelete() {
-		return contentIsDelete;
+
+	public int getIsDelete() {
+		return isDelete;
 	}
-	public void setContentIsDelete(int contentIsDelete) {
-		this.contentIsDelete = contentIsDelete;
+
+	public void setIsDelete(int isDelete) {
+		this.isDelete = isDelete;
 	}
+
 	public int getContentStatus() {
 		return contentStatus;
 	}
+
 	public void setContentStatus(int contentStatus) {
 		this.contentStatus = contentStatus;
 	}
-	public String getContentModifyId() {
-		return contentModifyId;
+
+	public String getDeleteTime() {
+		return deleteTime;
 	}
-	public void setContentModifyId(String contentModifyId) {
-		this.contentModifyId = contentModifyId;
+
+	public void setDeleteTime(String deleteTime) {
+		this.deleteTime = deleteTime;
 	}
-	public String getContentModifyTime() {
-		return contentModifyTime;
+
+	public String getDeleteId() {
+		return deleteId;
 	}
-	public void setContentModifyTime(String contentModifyTime) {
-		this.contentModifyTime = contentModifyTime;
+
+	public void setDeleteId(String deleteId) {
+		this.deleteId = deleteId;
+	}
+
+	public String getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public int getContentSort() {
+		return contentSort;
+	}
+
+	public void setContentSort(int contentSort) {
+		this.contentSort = contentSort;
 	}
 	
 }

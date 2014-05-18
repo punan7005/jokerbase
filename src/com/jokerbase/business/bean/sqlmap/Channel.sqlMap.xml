@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="com.jokerbase.business.bean.Channel">
+
+  <typeAlias alias="channel" type="com.jokerbase.business.bean.Channel"/>
+
+  <resultMap id="channelResult" class="channel">
+    <result property="channelId" column="channel_id"/>
+    <result property="channelName" column="channel_name"/>
+	<result property="channelLevel" column="channel_level"/>
+	<result property="channelParentId" column="channel_parent_id"/>
+	<result property="channelStatus" column="channel_status"/>
+	<result property="isDelete" column="is_delete"/>
+	<result property="createTime" column="create_time"/>
+	<result property="createId" column="create_id"/>
+	<result property="updateTime" column="update_time"/>
+	<result property="updateId" column="update_id"/>
+	<result property="deleteTime" column="delete_time"/>
+	<result property="deleteId" column="delete_id"/>
+	<result property="channelType" column="channel_type"/>
+	<result property="channelCss" column="channel_css"/>
+	<!-- 
+	<result property="roles" column="id" select="com.teacherclub.business.security.entity.Role.selectByUserId"/>
+	 -->
+  </resultMap> 
+  
+  <select id="selectById" resultMap="channelResult">
+    select * from tb_channel 
+		<dynamic prepend="where">
+			<isParameterPresent>
+				channel_id = #value#
+			</isParameterPresent>
+		</dynamic> 
+  </select>
+  
+  <select id="selectByMap" resultMap="channelResult">
+    select * from tb_channel 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelName">
+				channel_name = #channelName#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelParentId">
+				channel_parent_id = #channelParentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelStatus">
+				channel_status = #channelStatus#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="updateTime">
+				update_time = #"updateTime"#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+		</dynamic> 
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  
+  <insert id="insert" parameterClass="channel">
+       insert into tb_channel 
+			(channel_id, 
+			channel_name, 
+			channel_level, 
+			channel_parent_id, 
+			channel_status, 
+			is_delete, 
+			create_time, 
+			create_id, 
+			update_time, 
+			update_id, 
+			delete_time, 
+			delete_id, 
+			channel_type,
+			channel_css
+			)
+			values
+			(#channelId#, 
+			#channelName#, 
+			#channelLevel#, 
+			#channelParentId#, 
+			#channelStatus#, 
+			#isDelete#, 
+			#createTime#, 
+			#createId#, 
+			#updateTime#, 
+			#updateId#, 
+			#deleteTime#, 
+			#deleteId#, 
+			#channelType#,
+			#channelCss#
+			);
+    <selectKey resultClass="java.lang.String" keyProperty="channelId">
+    	select last_insert_id(); 
+    </selectKey>
+  </insert>
+  
+  <select id="count" resultClass="int">
+  		select count(*) from tb_channel
+  		<dynamic prepend="where">
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelName">
+				channel_name = #channelName#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelParentId">
+				channel_parent_id = #channelParentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				is_delete = #isDelete#
+			</isNotNull>
+  		</dynamic> 
+  </select>
+  
+  <update id="update" parameterClass="channel">
+	update tb_channel 
+		set
+		channel_id = #channelId# , 
+		channel_name = #channelName# , 
+		channel_level = #channelLevel# , 
+		channel_parent_id = #channelParentId# , 
+		channel_status = #channelStatus# , 
+		is_delete = #isDelete# , 
+		create_time = #createTime# , 
+		create_id = #createId# , 
+		update_time = #updateTime# , 
+		update_id = #updateId# , 
+		delete_time = #deleteTime# , 
+		delete_id = #deleteId# , 
+		channel_type = #channelType#, 
+		channel_css = #channelCss#
+		where
+		channel_id = #channelId# ;
+  </update>
+  <select id="selectPageByMap" resultClass="java.util.HashMap">
+  	select 
+  	 n.channel_id as channelId, 
+  	 n.channel_name as channelName, 
+  	 n.channel_parent_id as channelParentId, 
+  	 n.channel_status as channelStatus, 
+  	 n.is_delete as isDelete, 
+  	 n.create_time as createTime, 
+  	 n.update_time as updateTime,  
+  	 n.delete_time as deleteTime, 
+  	 n.channel_type as channelType, 
+  	 n.channel_css as channelCss,  
+  	 a.user_name as createUserName,
+	 b.user_name as UpdateUserName,
+	 c.user_name as DeleteUserName, 
+	 m.channel_name as channelParentName 
+  	 from 
+  	 tb_channel n  
+	 left join tb_user a on n.create_id = a.user_id 
+	 left join tb_user b on n.update_id = b.user_id 
+	 left join tb_user c on n.delete_id = c.user_id 
+	 left join tb_channel m on n.channel_parent_id = m.channel_id 
+	 <dynamic prepend="where">
+			<isNotNull prepend="and" property="channelId">
+				channel_id = #channelId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelName">
+				channel_name = #channelName#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelParentId">
+				channel_parent_id = #channelParentId#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelStatus">
+				channel_status = #channelStatus#
+			</isNotNull>
+			<isNotNull prepend="and" property="isDelete">
+				n.is_delete = #isDelete#
+			</isNotNull>
+			<isNotNull prepend="and" property="createTime">
+				create_time = #createTime#
+			</isNotNull>
+			<isNotNull prepend="and" property="createId">
+				create_id = #createId#
+			</isNotNull>
+			<isNotNull prepend="and" property="updateTime">
+				update_time = #"updateTime"#
+			</isNotNull>
+			<isNotNull prepend="and" property="channelType">
+				channel_type = #channelType#
+			</isNotNull>
+		</dynamic> 
+		<dynamic>
+			<isNotNull prepend="order by" property="orderBy">
+				$orderBy$ $order$ 
+			</isNotNull>	
+			<isNotNull prepend="limit" property="limit">
+				$start$,$end$
+			</isNotNull>
+		</dynamic>
+  </select>
+  <!-- 
+   <insert id="insert" parameterClass="user">
+       insert into user (username,sex) values (#userName#,#sex#)
+    <selectKey resultClass="java.lang.Integer" keyProperty="userId">
+    	select last_insert_id(); 
+    </selectKey>
+  </insert>
+  
+  <select id="selectById" resultMap="userResult">
+    select * from user 
+		<dynamic prepend="where">
+			<isParameterPresent>
+				id = #value#
+			</isParameterPresent>
+		</dynamic> 
+  </select>
+  
+  <select id="selectByIds" resultMap="userResult" parameterClass="java.util.List">
+    select * from user 
+		where
+			id in
+	  		<iterate open="(" close=")" conjunction=",">
+      			#[]#
+	    	</iterate>
+  </select>
+
+  
+
+  <update id="updateByMap">
+    update user
+    	<dynamic prepend="set">
+    		<isNotNull prepend="," property="loginName">
+	    		loginname = #loginName#
+	    	</isNotNull>
+    		<isNotNull prepend="," property="trueName">
+	    		truename = #trueName#
+	    	</isNotNull>
+    	</dynamic> 
+    	where id = #id#
+  </update>
+  
+  <update id="updateByIdsMap">
+    update user
+    	<dynamic prepend="set">
+    		<isNotNull prepend="," property="loginName">
+	    		loginname = #loginName#
+	    	</isNotNull>
+    		<isNotNull prepend="," property="trueName">
+	    		truename = #trueName#
+	    	</isNotNull>
+    	</dynamic> 
+    	where id in
+    	<iterate open="(" close=")" conjunction="," property="ids">
+    		#ids[]#
+    	</iterate>
+  </update>
+  	 注意：此处用的是id
+   
+   <delete id="deleteById" parameterClass="java.lang.Integer">
+		delete from user where id=#value#
+   </delete>
+  
+  <delete id="deleteByIds" parameterClass="java.util.List">
+  	delete from user
+  		where
+	  		id in 
+	  		<iterate open="(" close=")" conjunction=",">
+	      		#[]#
+	    	</iterate>
+   </delete>  
+
+   <delete id="deleteByMap">
+   	delete from user where
+   		<dynamic>
+     		<isNotNull prepend="and" property="id">
+	    		id = #id#
+	    	</isNotNull>
+   		</dynamic>
+   </delete>
+  
+ -->
+</sqlMap>

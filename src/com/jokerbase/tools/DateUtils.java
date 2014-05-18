@@ -747,6 +747,8 @@ public class DateUtils {
 //			System.out.println("==="+getTwoDateDifferentDay("2012-8-20","2012-8-21"));
 //			System.out.println("==="+getTwoDateDifferentDay("2012-8-20 10:00:00","2012-8-21 08:59:59"));
 			
+			System.out.println(getDateTime());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

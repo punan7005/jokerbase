@@ -319,7 +319,7 @@ public class Page implements Serializable {
 		return str.toString();
 	}
 	
-	public String getPageStringForTMS(){
+public String getPageStringForJokerBase(){
 		
 		return getPageString3(this.getJumpFunction(),this.getCurrentPageIndex(),this.getPageCount(),this.getRowCount());
 	}
@@ -336,10 +336,17 @@ public class Page implements Serializable {
 		str.append("<span class=\"pageRecordClass\" id=\"pageRecord\">");
 		str.append("[总数:<b>" + rowCount + "</b> 条</span>] ");
 		if(ec_p == 1){
-			str.append("[<a href='#'>首页</a>] ");
-			str.append("[<a href='#'>上一页</a>] ");
-			str.append("[<a href='javascript:").append(jsMethod).append("(" + (ec_p + 1) + ")')>下一页</a>] ");
-			str.append("[<a href='javascript:").append(jsMethod).append("(" + pageCount + ")'>尾页</a>] ");
+			if(pageCount == 1){
+				str.append("[<a href='#'>首页</a>] ");
+				str.append("[<a href='#'>上一页</a>] ");
+				str.append("[<a href='#'>下一页</a>] ");
+				str.append("[<a href='#'>尾页</a>] ");
+			}else if(pageCount > 1){
+				str.append("[<a href='#'>首页</a>] ");
+				str.append("[<a href='#'>上一页</a>] ");
+				str.append("[<a href='javascript:").append(jsMethod).append("(" + (ec_p + 1) + ")')>下一页</a>] ");
+				str.append("[<a href='javascript:").append(jsMethod).append("(" + pageCount + ")'>尾页</a>] ");
+			}
 		}else if(ec_p > 1){
 			if(pageCount == ec_p){
 				str.append("[<a href='javascript:").append(jsMethod).append("(1)'>首页</a>] ");
