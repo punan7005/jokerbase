@@ -7,30 +7,30 @@
 <title>jokerbase</title>
 <!--                       CSS                       -->
 <!-- Reset Stylesheet -->
-<link rel="stylesheet" href="/css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="${ctx }/css/reset.css" type="text/css" media="screen" />
 <!-- Main Stylesheet -->
-<link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="${ctx }/css/style.css" type="text/css" media="screen" />
 <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
-<link rel="stylesheet" href="/css/invalid.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="/css/welcome.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="${ctx }/css/invalid.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="${ctx }/css/welcome.css" type="text/css" media="screen" />
 <!--                       Javascripts                       -->
 <!-- jQuery -->
-<script type="text/javascript" src="/scripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/jquery-1.7.2.min.js"></script>
 <!-- jQuery Configuration -->
-<script type="text/javascript" src="/scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/simpla.jquery.configuration.js"></script>
 <!-- Facebox jQuery Plugin -->
-<script type="text/javascript" src="/scripts/facebox.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/facebox.js"></script>
 <!-- jQuery WYSIWYG Plugin -->
-<script type="text/javascript" src="/scripts/jquery.wysiwyg.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/jquery.wysiwyg.js"></script>
 <!-- jQuery Datepicker Plugin -->
-<script type="text/javascript" src="/scripts/jquery.datePicker.js"></script>
-<script type="text/javascript" src="/scripts/jquery.date.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/jquery.datePicker.js"></script>
+<script type="text/javascript" src="${ctx }/scripts/jquery.date.js"></script>
 
-<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
-<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8" src="${ctx }/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${ctx }/kindeditor/lang/zh_CN.js"></script>
 
-<script type="text/javascript" src="/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/uploadify/uploadify.css">
+<script type="text/javascript" src="${ctx }/uploadify/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx }/uploadify/uploadify.css">
 </head>
 
 <body>
@@ -52,7 +52,7 @@
           <!-- 添加类“当前”到当前菜单项 -->
           内容</a>
           <ul>
-            <li><a href="javascript:void(0);" onclick="managecontent()">管理文章</a></li>
+            <li><a href="javascript:void(0);" onclick="tocontentlist()">管理文章</a></li>
             <li><a href="javascript:void(0);" onclick="tocommentlist()">管理评论</a></li>
           </ul>
         </li>
@@ -162,10 +162,11 @@
 		);
 		
 	}
-	function managecontent(){
+	function tocontentlist(){
+		alert('1111');
 		$("#right").html("loading...");
 		$("#right").load(
-		"${ctx}/content/list.shtml"
+		"${ctx}/content/tocontentlist.shtml"
 		);
 	}
 	function tomediaindex(){
@@ -178,13 +179,6 @@
 		$("#right").html("loading...");
 		$("#right").load(
 		"${ctx}/media/indexdesc.shtml"
-		);
-	}
-	
-	function tocontentlist(){
-		$("#right").html("loading...");
-		$("#right").load(
-		"${ctx}/content/list.shtml"	//请求路径
 		);
 	}
 	

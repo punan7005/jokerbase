@@ -21,6 +21,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    hello github <br>
+    <% response.sendRedirect("tologin.shtml"); %> <br>
   </body>
 </html>

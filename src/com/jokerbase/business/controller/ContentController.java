@@ -34,7 +34,6 @@ import com.jokerbase.tools.UuidFactory;
  * 创建时间：2013-2-21 下午1:57:41 
  */
 @Controller
-@RequestMapping("/content")
 public class ContentController {
 	
 	@Autowired
@@ -45,22 +44,13 @@ public class ContentController {
 	
 	private Logger logger = new Logger();
 
-	@RequestMapping("/index")
+	@RequestMapping("/content/tocratecontent")
 	public ModelAndView indexContent(
 			HttpServletResponse response, 
 			HttpServletRequest request,
 			@RequestParam(value="contentId",required=false)String contentId){
-		logger.info("index Content");
-		ModelAndView mv = new ModelAndView();
 		
-		List<Channel> channels = channelService.findByMap(new String[]{"isDelete","channelType"}, new Object[]{0,0}, "create_time","desc");
-		mv.addObject("channels", channels);
-		if(contentId!=null){
-			Content content = contentService.findById(contentId);
-			mv.addObject("content",content);
-		}
-		mv.setViewName("/content/index");
-		return mv;
+		return new ModelAndView();
 	}
 	
 	@RequestMapping("/edit")
@@ -185,8 +175,8 @@ public class ContentController {
 	}
 	
 	
-	@RequestMapping("/list")
-	public ModelAndView listContents(
+	@RequestMapping("/content/tocontentlist")
+	public ModelAndView toContentList(
 			HttpServletResponse response,
 			@RequestParam(value = "pageNo" ,required=false)Integer pageNo
 			){
@@ -204,6 +194,7 @@ public class ContentController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("contents", contents);
 		mv.addObject("pagestring", page.getPageStringForJokerBase());
+		mv.setViewName("/content/contentlist");
 		return mv;
 	}
 	

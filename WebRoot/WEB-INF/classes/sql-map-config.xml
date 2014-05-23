@@ -13,7 +13,14 @@
 			useStatementNamespaces="true"
 			
 			/>
-		
 	<!-- user -->
 	<sqlMap resource="com/jokerbase/business/bean/sqlmap/User.sqlMap.xml"/>	
+	<!-- channel -->
+	<sqlMap resource="com/jokerbase/business/bean/sqlmap/Channel.sqlMap.xml"/>	
+	<!-- comment -->
+	<sqlMap resource="com/jokerbase/business/bean/sqlmap/Comment.sqlMap.xml"/>
+	<!-- content -->	
+	<sqlMap resource="com/jokerbase/business/bean/sqlmap/Content.sqlMap.xml"/>
+	<!-- media -->	
+	<sqlMap resource="com/jokerbase/business/bean/sqlmap/Media.sqlMap.xml"/>	
 </sqlMapConfig>
