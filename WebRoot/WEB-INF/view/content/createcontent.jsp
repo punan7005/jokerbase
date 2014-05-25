@@ -48,7 +48,7 @@
              <p>
              <label>分类列表</label>
                <select name="dropdown" id="channelId">
-               <c:forEach var="channel" items="${channels}">
+               <c:forEach var="channel" items="${channellist}">
                       <option value="${channel.channelId }">${channel.channelName}</option>
                </c:forEach>
                </select>

@@ -49,11 +49,13 @@ public class ContentController {
 			HttpServletResponse response, 
 			HttpServletRequest request,
 			@RequestParam(value="contentId",required=false)String contentId){
-		
-		return new ModelAndView();
+		Map<String, Object> message = new HashMap<String, Object>();
+		List<Channel> channellist = channelService.findByMap(new String[]{"channelStatus", "isDelete"}, new Object[]{0, 0}, null, null);
+		message.put("channellist", channellist);
+		return new ModelAndView("/content/createcontent",message);
 	}
 	
-	@RequestMapping("/edit")
+	@RequestMapping("/content/tomoditycontent")
 	public ModelAndView editContent(
 			HttpServletResponse response, 
 			HttpServletRequest request,
@@ -61,19 +63,19 @@ public class ContentController {
 		logger.info("index Content");
 		ModelAndView mv = new ModelAndView();
 		
-		List<Channel> channels = channelService.findByMap(new String[]{"isDelete","channelType"}, new Object[]{0,0}, "create_time","desc");
+		List<Channel> channels = channelService.findByMap(new String[]{"isDelete","channelStatus"}, new Object[]{0,0}, null, null);
 		mv.addObject("channels", channels);
 		if(contentId!=null){
 			Content content = contentService.findById(contentId);
 			mv.addObject("content",content);
 		}
-		mv.setViewName("/content/edit");
+		mv.setViewName("/content/modifycontent");
 		return mv;
 	}
 	
 	
 	
-	@RequestMapping("/create")
+	@RequestMapping("/content/create")
 	public ModelAndView createContent(HttpServletResponse response, 
 			HttpServletRequest request,
 			@RequestParam(value="content")String content,
@@ -99,10 +101,10 @@ public class ContentController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/content/list.shtml");
+		return new ModelAndView("redirect:/content/tocontentlist.shtml");
 	}
 	
-	@RequestMapping("/update")
+	@RequestMapping("/content/update")
 	public ModelAndView updateContent(HttpServletResponse response, 
 			HttpServletRequest request,
 			@RequestParam(value="contentId")String contentId,
@@ -121,7 +123,7 @@ public class ContentController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/content/list.shtml");
+		return new ModelAndView("redirect:/content/tocontentlist.shtml");
 	}
 	
 	/**

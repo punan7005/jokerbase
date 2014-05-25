@@ -2,6 +2,7 @@ package com.jokerbase.business.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +31,10 @@ import com.jokerbase.tools.UuidFactory;
 
 /***
  * 
- * @author bluesand
+ * @author jokerpu
  *
  */
 @Controller
-@RequestMapping("/media")
 public class MediaController {
 	
 	private Logger logger = new Logger();
@@ -46,167 +46,28 @@ public class MediaController {
 	@Autowired
 	private IChannelService channelService;
 	
-	@RequestMapping("/index")
-	public ModelAndView indexContent(
-			HttpServletResponse response, 
-			HttpServletRequest request,
-			@RequestParam(value = "pageNo" ,required=false)Integer pageNo){
-		logger.info("index media");
-		
-		//Map<String, Object> message = new HashMap(); 
+	@RequestMapping("/media/tomedialist")
+	public ModelAndView toMediaList(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "pageNo" ,required=false)Integer pageNo){
+		Map<String, Object> message = new HashMap<String, Object>();
 		if(pageNo == null || pageNo == 0){
 			pageNo = 1;
 		}
-		int contentCount = mediaService.count(new String[]{"isDelete","channelType"}, new Object[]{0,1});
-		if(contentCount == 1){
+		int mediaCount = mediaService.count(new String[]{"isDelete"}, new Object[]{0});
+		if(mediaCount == 1){
 			pageNo = 1;
 		}
-		Page page = new Page(pageNo, Page.DEFAULT_PAGE_ROW_COUNT, contentCount);
-		List<Map<String, Object>> medias = mediaService.selectPageByMap(new String[]{"isDelete","channelType"}, new Object[]{0,1}, "createTime", "desc", Page.DEFAULT_PAGE_ROW_COUNT, pageNo);
-		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("medias", medias);
-		mv.addObject("REALMEDIAURL",Constants.REALMEDIAURL);
-		mv.addObject("pagestring", page.getPageStringForJokerBase());
-		mv.setViewName("/media/index");
-		return mv;
+		Page page = new Page(pageNo, Page.DEFAULT_PAGE_ROW_COUNT, mediaCount);
+		List<Media> mediaList = mediaService.findByMap(new String[]{}, new Object[]{}, null, null);
+		message.put("mediaList", mediaList);
+		message.put("pagestring", page.getPageStringForJokerBase());
+		return new ModelAndView("/media/medialist",message);
 	}
 	
-	@RequestMapping("/indexdesc")
-	public ModelAndView indexdescContent(
-			HttpServletResponse response, 
-			HttpServletRequest request,
-			@RequestParam(value = "pageNo" ,required=false)Integer pageNo){
-		logger.info("index media");
-		
-		//Map<String, Object> message = new HashMap(); 
-		if(pageNo == null || pageNo == 0){
-			pageNo = 1;
-		}
-		int contentCount = mediaService.count(new String[]{"isDelete","channelType"}, new Object[]{0,3});
-		if(contentCount == 1){
-			pageNo = 1;
-		}
-		Page page = new Page(pageNo, Page.DEFAULT_PAGE_ROW_COUNT, contentCount);
-		List<Map<String, Object>> medias = mediaService.selectPageByMap(new String[]{"isDelete","channelType"}, new Object[]{0,3}, "createTime", "desc", Page.DEFAULT_PAGE_ROW_COUNT, pageNo);
-		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("medias", medias);
-		mv.addObject("REALMEDIAURL",Constants.REALMEDIAURL);
-		mv.addObject("pagestring", page.getPageStringForJokerBase());
-		mv.setViewName("/media/indexdesc");
-		return mv;
+	@RequestMapping("/media/tocreatemedia")
+	public ModelAndView toCreateMedia(HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> message = new HashMap<String, Object>();
+		List<Channel> channelList = channelService.findByMap(new String[]{"isDelete", "channelStatus", "channelType"}, new Object[]{0, 0, 1}, null, null);
+		message.put("channelList", channelList);
+		return new ModelAndView("/media/createmedia", message);
 	}
-	
-	@RequestMapping("/createindex")
-	public ModelAndView createMediaIndex(){
-		ModelAndView mv = new ModelAndView();
-		List<Channel> channels = channelService.findByMap(new String[]{"isDelete","channelType"}, new Object[]{0,1}, "create_time","desc");
-		mv.addObject("channels", channels);
-		return mv;
-	}
-	
-	@RequestMapping("/createindexdesc")
-	public ModelAndView createMediaIndexdesc(){
-		ModelAndView mv = new ModelAndView();
-		List<Channel> channels = channelService.findByMap(new String[]{"isDelete","channelType"}, new Object[]{0,3}, "create_time","desc");
-		mv.addObject("channels", channels);
-		return mv;
-	}
-	
-	
-	@RequestMapping("/upload")
-	public ModelAndView uploadMedia(
-			HttpServletRequest request,
-			HttpServletResponse response, 
-			@RequestParam(value = "imgFile") MultipartFile imgFile,
-			@RequestParam(value="channelId")String channelId
-			){
-		
-		String mediaName = imgFile.getOriginalFilename();
-		logger.info(mediaName);
-		try {
-			String url = FileUpload.upLoadFile(Constants.MEDIA_PATH, imgFile.getOriginalFilename(), imgFile.getBytes());
-			
-			Media media = new Media();
-			
-			media.setMediaId(UuidFactory.getUuid());
-			media.setMediaName(mediaName);
-			media.setMediaPath(url);
-			media.setChannelId(channelId);
-			media.setChannelType(1);
-			media.setCreateId(SystemUtil.getCurrentUser(request).getUserId());
-			media.setCreateTime(DateUtils.getDateTime());
-			media.setIsDelete(0);
-			media.setMediaStatus(0);
-			
-			try {
-				mediaService.insert(media);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return new ModelAndView("redirect:/media/indexdesc.shtml");
-	}
-	
-	@RequestMapping("/uploaddesc")
-	public ModelAndView uploadMediadesc(
-			HttpServletRequest request,
-			HttpServletResponse response, 
-			@RequestParam(value = "imgFile") MultipartFile imgFile,
-			@RequestParam(value="channelId")String channelId,
-			@RequestParam(value="mediaDesc")String mediaDesc
-			){
-		
-		String mediaName = imgFile.getOriginalFilename();
-		logger.info(mediaName);
-		
-		try {
-			String url = FileUpload.upLoadFile(Constants.MEDIA_PATH, imgFile.getOriginalFilename(), imgFile.getBytes());
-			Media media = new Media();
-			media.setMediaId(UuidFactory.getUuid());
-			media.setMediaName(mediaName);
-			media.setMediaPath(url);
-			media.setMediaDesc(mediaDesc);
-			media.setChannelId(channelId);
-			media.setChannelType(3);
-			media.setCreateId(SystemUtil.getCurrentUser(request).getUserId());
-			media.setCreateTime(DateUtils.getDateTime());
-			media.setIsDelete(0);
-			media.setMediaStatus(0);
-			
-			try {
-				mediaService.insert(media);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return new ModelAndView("redirect:/media/index.shtml");
-	}
-	
-	@RequestMapping("/del")
-	public void delMedia(
-			HttpServletResponse response,
-			@RequestParam(value="mediaId")String mediaId){
-		
-		try {
-			int ret = mediaService.update(mediaId, new String[]{"deleteId","deleteTime","isDelete"}, new Object[]{UuidFactory.getUuid(),DateUtils.getDateTime(),1});
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		try {
-			response.getWriter().write("{\"error\":1}");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
 }

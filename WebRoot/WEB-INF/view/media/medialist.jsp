@@ -54,8 +54,8 @@
               </tr>
             </tfoot>
             <tbody>
-            <c:if test="${medias!=null}">
-            	<c:forEach var="media" items="${medias}" varStatus="status">
+            <c:if test="${mediaList!=null}">
+            	<c:forEach var="media" items="${mediaList}" varStatus="status">
               <tr>
                 <td>
                   <input type="checkbox" />
@@ -75,7 +75,7 @@
               </tr>
               </c:forEach>
               </c:if>
-              <c:if test="${medias==null}">
+              <c:if test="${mediaList==null}">
               <tr>
               	<td>
               暂无数据
@@ -96,7 +96,7 @@
 function tocreatemedia(){
 		$("#right").html("loading...");
 		$("#right").load(
-		"${ctx}/media/createindex.shtml"	//请求路径
+		"${ctx}/media/tocreatemedia.shtml"	//请求路径
 		);
 	}
 function jump(pageNo){

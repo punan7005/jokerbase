@@ -68,7 +68,7 @@
 		#deleteTime#,
 		#deleteId#,
 		#updateId#,
-		#updateTime#
+		#updateTime#,
 		#contentSort#
         )
     <selectKey resultClass="java.lang.String" keyProperty="contentId">

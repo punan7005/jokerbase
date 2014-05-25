@@ -67,7 +67,7 @@
           <!-- 添加类“当前”到当前菜单项 -->
           媒体</a>
           <ul>
-            <li><a href="javascript:void(0);" onclick="tomediaindex()">管理媒体(无描述)</a></li>
+            <li><a href="javascript:void(0);" onclick="tomedialist()">管理媒体(无描述)</a></li>
             <li><a href="javascript:void(0);" onclick="tomediaindexdesc()">管理媒体(带描述)</a></li>
           </ul>
         </li>
@@ -163,16 +163,15 @@
 		
 	}
 	function tocontentlist(){
-		alert('1111');
 		$("#right").html("loading...");
 		$("#right").load(
 		"${ctx}/content/tocontentlist.shtml"
 		);
 	}
-	function tomediaindex(){
+	function tomedialist(){
 		$("#right").html("loading...");
 		$("#right").load(
-		"${ctx}/media/index.shtml"
+		"${ctx}/media/tomedialist.shtml"
 		);
 	}
 	function tomediaindexdesc(){
@@ -182,12 +181,6 @@
 		);
 	}
 	
-	function tomedialist(){
-		$("#right").html("loading...");
-		$("#right").load(
-		"${ctx}/media/index.shtml"	//请求路径
-		);
-	}
 	function tochannellist(){
 		$("#right").html("loading...");
 		$("#right").load(

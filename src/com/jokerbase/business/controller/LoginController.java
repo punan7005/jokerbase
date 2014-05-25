@@ -56,19 +56,7 @@ public class LoginController {
 			return new ModelAndView("/manage/manageindex", message);
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("登录出错");
 			return new ModelAndView("/login");
 		}
-	}
-	@RequestMapping("/index")
-	public ModelAndView toIndex(HttpServletRequest request, HttpServletResponse response){
-		Map<String, Object> message = new HashMap();
-		List<Channel> channellist = channelService.findByMap(new String[]{"isDelete"}, new Object[]{0}, "create_time", null);
-		message.put("channellist", channellist);
-		
-		List<Media> medias = mediaService.pageQueryBy(new String[]{"isDelete"}, new Object[]{0}, "create_time", "desc", 8, 1);
-		message.put("medias", medias);
-		message.put("REALMEDIAURL",Constants.REALMEDIAURL);
-		return new ModelAndView("az/index", message);
 	}
 }

@@ -80,7 +80,7 @@
                 </c:if>
                 <td>
                   <!-- Icons -->
-                  <a href="javascript:void(0);" onclick="editContent('${content.contentId}')">编辑</a>
+                  <a href="javascript:void(0);" onclick="tomoditycontent('${content.contentId}')">编辑</a>
                   <a href="javascript:void(0);" onclick="delContent('${content.contentId}')">删除</a></td>
                   <td>
                   	<select name="contentSort" id="contentSort">
@@ -117,13 +117,13 @@
 function tocreatecontent(){
 		$("#right").html("loading...");
 		$("#right").load(
-		"${ctx}/content/index.shtml"	//请求路径
+		"${ctx}/content/tocratecontent.shtml"	//请求路径
 		);
 }
-function editContent(contentId){
+function tomoditycontent(contentId){
 	$("#right").html("loading...");
 	$("#right").load(
-	"${ctx}/content/edit.shtml",	//请求路径
+	"${ctx}/content/tomoditycontent.shtml",	//请求路径
 	{"contentId":contentId}
 	);
 }
