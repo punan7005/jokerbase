@@ -70,4 +70,41 @@ public class MediaController {
 		message.put("channelList", channelList);
 		return new ModelAndView("/media/createmedia", message);
 	}
+	
+	@RequestMapping("/media/upload")
+	public ModelAndView uploadMedia(
+			HttpServletRequest request,
+			HttpServletResponse response, 
+			@RequestParam(value = "imgFile") MultipartFile imgFile,
+			@RequestParam(value="channelId")String channelId
+			){
+		
+		String mediaName = imgFile.getOriginalFilename();
+		logger.info(mediaName);
+		try {
+			String url = FileUpload.upLoadFile(Constants.MEDIA_PATH, imgFile.getOriginalFilename(), imgFile.getBytes());
+			
+			Media media = new Media();
+			
+			media.setMediaId(UuidFactory.getUuid());
+			media.setMediaName(mediaName);
+			media.setMediaPath(url);
+			media.setChannelId(channelId);
+			media.setChannelType(1);
+			media.setCreateId(SystemUtil.getCurrentUser(request).getUserId());
+			media.setCreateTime(DateUtils.getDateTime());
+			media.setIsDelete(0);
+			media.setMediaStatus(0);
+			
+			try {
+				mediaService.insert(media);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return new ModelAndView("redirect:/media/indexdesc.shtml");
+	}
 }

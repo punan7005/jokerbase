@@ -50,14 +50,14 @@
 	<script type="text/javascript">
 	$(function(){
 		$('#imgFile').uploadify({
-			'formData'     : {
+			'formData':{
 				'channelId' : $("#channelId option:selected").val()
 			},
-			fileObjName     : 'imgFile',
-			buttonText : '媒体上传',
-            fileTypeExts: '*.gif; *.jpg; *.png',
-			swf      : '/uploadify/uploadify.swf',
-			uploader : '/media/upload.shtml'
+			fileObjName:'imgFile',
+			buttonText:'媒体上传',
+            fileTypeExts:'*.gif; *.jpg; *.png',
+			swf:'${ctx}/uploadify/uploadify.swf',
+			uploader:'${ctx}/media/upload.shtml'
 		});
 	})
 </script>
