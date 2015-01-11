@@ -57,7 +57,7 @@ public class MediaController {
 			pageNo = 1;
 		}
 		Page page = new Page(pageNo, Page.DEFAULT_PAGE_ROW_COUNT, mediaCount);
-		List<Media> mediaList = mediaService.findByMap(new String[]{}, new Object[]{}, null, null);
+		List mediaList = mediaService.selectPageByMap(new String[]{}, new Object[]{}, null, null, Page.DEFAULT_PAGE_ROW_COUNT, pageNo);
 		message.put("mediaList", mediaList);
 		message.put("pagestring", page.getPageStringForJokerBase());
 		return new ModelAndView("/media/medialist",message);

@@ -14,7 +14,7 @@
     
     <!-- auto search @Controller flaged classes -->
     <!-- 修改自己工程的路径 -->
-	<context:component-scan base-package="com.jokerbase.business.controller" />
+	<context:component-scan base-package="com.xincheng.business.controller" />
 	
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/> 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
@@ -28,7 +28,7 @@
     <mvc:interceptors>
     	<mvc:interceptor>  
            <mvc:mapping path="/**"/>  
-           <bean class="com.jokerbase.plugins.interceptor.CoreInterceptor" ></bean>
+           <bean class="com.xincheng.plugins.interceptor.CoreInterceptor" ></bean>
        </mvc:interceptor>
     </mvc:interceptors>
     <bean id="multipartResolver"
